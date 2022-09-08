@@ -1,4 +1,6 @@
 import { createServer } from "@graphql-yoga/node";
+import { deleteEvent, events, newEvent, updateEvent } from "utils/helper";
+import { Event } from "types";
 
 const typeDefs = /* GraphQL */ `
   type Event {
@@ -8,46 +10,45 @@ const typeDefs = /* GraphQL */ `
     end: Int!
   }
 
+  input EventInput {
+    id: ID!
+    title: String!
+    start: Int!
+    end: Int!
+  }
+
   type Query {
     events: [Event!]!
+  }
+
+  type Mutation {
+    newEvent(title: String!, start: Int!, end: Int): Event
+    deleteEvent(id: Int!): Boolean
+    editEvent(event: EventInput!): Event
   }
 `;
 
 const resolvers = {
   Query: {
     async events() {
-      return [
-        {
-          id: 1,
-          title: "Call with Bob",
-          start: 420,
-          end: 440,
-        },
-        {
-          id: 2,
-          title: "Lunch",
-          start: 720,
-          end: 780,
-        },
-        {
-          id: 3,
-          title: "Meeting with Claire",
-          start: 780,
-          end: 840,
-        },
-        {
-          id: 4,
-          title: "Review OKRs",
-          start: 870,
-          end: 900,
-        },
-        {
-          id: 5,
-          title: "Interview Ahmed",
-          start: 870,
-          end: 930,
-        },
-      ];
+      return events;
+    },
+  },
+  Mutation: {
+    newEvent: (
+      _parent: unknown,
+      args: { title: string; start: number; end: number }
+    ) => {
+      const { title, start, end } = args;
+      return newEvent(title, start, end);
+    },
+    editEvent: (_parent: unknown, args: { event: Event }) => {
+      const { event } = args;
+      return updateEvent(event);
+    },
+    deleteEvent: (_parent: unknown, args: { id: string }) => {
+      const { id } = args;
+      return deleteEvent(id);
     },
   },
 };
