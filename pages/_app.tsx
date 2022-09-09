@@ -4,11 +4,7 @@ import PageLayout from "pages/components/PageLayout";
 import "../styles/global.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return (
-    <PageLayout>
-      <Component {...pageProps} />
-    </PageLayout>
-  );
+  return <Component {...pageProps} />;
 }
 
 export default MyApp;
