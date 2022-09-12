@@ -40,6 +40,8 @@ const resolvers = {
       args: { title: string; start: number; end: number }
     ) => {
       const { title, start, end } = args;
+      console.log("New event: ", title);
+
       return newEvent(title, start, end);
     },
     editEvent: (_parent: unknown, args: { event: Event }) => {

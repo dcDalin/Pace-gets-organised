@@ -1,35 +1,18 @@
-import useSWR from "swr";
-import dayjs from "dayjs";
+import { useState } from "react";
 import dayLayout from "@/utils/dayLayout";
-
-let today = dayjs().startOf("date").toDate();
-
-const fetcher = (query: string) =>
-  fetch("/api/graphql", {
-    method: "POST",
-    headers: {
-      "Content-type": "application/json",
-    },
-    body: JSON.stringify({ query }),
-  })
-    .then((res) => res.json())
-    .then((json) => json.data);
+import DayCard from "components/DayCard";
+import useFetchEvents from "hooks/useFetchEvents";
+import NewEventModal from "../components/NewEventModal";
 
 export default function Index() {
-  const { data, error } = useSWR(
-    "{ events { id, title, start, end } }",
-    fetcher
-  );
+  const [data, error] = useFetchEvents();
+
+  const [openNewEventModal, setOpenNewEventModal] = useState(false);
 
   if (error) return <div>Failed to load</div>;
   if (!data) return <div>Loading...</div>;
 
   const { events } = data;
-
-  const handleDate = (date) => {
-    return dayjs(today).add(date, "minutes").format("h mm A");
-  };
-
   const eventsLayout = dayLayout(events);
 
   return (
@@ -137,33 +120,21 @@ export default function Index() {
           </div>
         </div>
 
-        <div className="h-[1440px] w-[620px] px-0 box-border bg-gray-50">
+        <div
+          className="h-[1440px] w-[620px] px-0 box-border bg-gray-50 cursor-pointer"
+          onClick={() => setOpenNewEventModal(true)}
+        >
           {eventsLayout &&
             eventsLayout.length &&
-            eventsLayout.map(
-              ({ end, height, id, left, start, title, top, width }) => {
-                const startTime = handleDate(start);
-                const endTime = handleDate(end);
-                return (
-                  <div
-                    key={id}
-                    className="absolute box-border bg-blue-700 rounded-md flex items-center pl-2 space-x-1 text-sm text-white"
-                    style={{
-                      width: `${width}px`,
-                      height: `${height - 5}px`,
-                      top: `${top}px`,
-                      left: `${left}px`,
-                    }}
-                  >
-                    <span>{title}</span>
-                    <span>
-                      {startTime} - {endTime}
-                    </span>
-                  </div>
-                );
-              }
-            )}
+            eventsLayout.map((event, index) => {
+              return <DayCard key={index} event={event} />;
+            })}
         </div>
+
+        <NewEventModal
+          open={openNewEventModal}
+          close={() => setOpenNewEventModal(false)}
+        />
       </div>
     </div>
   );
