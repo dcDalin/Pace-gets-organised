@@ -31,8 +31,8 @@ export const events: Event[] = [
   {
     id: "5",
     title: "Interview Ahmed",
-    start: 870,
-    end: 930,
+    start: 20,
+    end: 1400,
   },
 ];
 

@@ -10,7 +10,13 @@ interface INewEventModalProps {
 export default function NewEventModal({ open, close }: INewEventModalProps) {
   return (
     <Transition appear show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-10" open={open} onClose={close}>
+      <Dialog
+        as="div"
+        className="relative z-10"
+        open={open}
+        onClose={close}
+        data-testid="new-event-modal"
+      >
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"

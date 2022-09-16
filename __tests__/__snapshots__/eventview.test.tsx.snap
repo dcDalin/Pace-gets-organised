@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Event View renders event view unchanged 1`] = `
+<div>
+  <div
+    class="h-[1440px] w-[620px] px-0 box-border bg-gray-50 cursor-pointer"
+    data-testid="events-view"
+  >
+    0
+  </div>
+</div>
+`;

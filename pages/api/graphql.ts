@@ -40,7 +40,7 @@ const resolvers = {
       args: { title: string; start: number; end: number }
     ) => {
       const { title, start, end } = args;
-      console.log("New event: ", title);
+      console.log("New event: ", title, start, end);
 
       return newEvent(title, start, end);
     },

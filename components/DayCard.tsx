@@ -41,7 +41,7 @@ export default function DayCard({ event }: IDayCardProps) {
         left: `${left}px`,
       }}
     >
-      <span>{title}</span>
+      <span data-testid="event-title">{title}</span>
       <span>
         {startTime} - {endTime}
       </span>
